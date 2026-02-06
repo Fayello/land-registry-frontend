@@ -1,6 +1,6 @@
 "use client";
 
-import { Hammer, Shield, Lock, FileSignature, Key, Eye, EyeOff, Save, Bell, AlertTriangle } from "lucide-react";
+import { Hammer, Shield, Lock, FileSignature, Key, Eye, EyeOff, Save, Bell, AlertTriangle, Settings2 } from "lucide-react";
 import { useState } from "react";
 
 export default function SettingsPage() {
