@@ -1,6 +1,6 @@
 "use client";
-
-import { useState, useEffect } from "react";
+export const dynamic = 'force-dynamic';
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -15,7 +15,7 @@ import {
     Loader2
 } from "lucide-react";
 
-export default function Home() {
+function HomeContent() {
     const searchParams = useSearchParams();
     const [query, setQuery] = useState("");
     const [result, setResult] = useState<any>(null);
@@ -342,6 +342,14 @@ export default function Home() {
                 </p>
             </footer>
         </main>
+    );
+}
+
+export default function Home() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <HomeContent />
+        </Suspense>
     );
 }
 
