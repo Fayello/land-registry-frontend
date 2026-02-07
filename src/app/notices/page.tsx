@@ -1,5 +1,5 @@
 "use client";
-import { API_URL } from "@/config/api";
+import { CaseService } from "@/services/case.service";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -38,10 +38,8 @@ export default function NoticesPage() {
     useEffect(() => {
         const fetchNotices = async () => {
             try {
-                const res = await fetch(`${API_URL}/api/cases/notices`);
-                if (res.ok) {
-                    setNotices(await res.json());
-                }
+                const data = await CaseService.getPublicNotices();
+                setNotices(data);
             } catch (error) {
                 console.error("Failed to load notices", error);
             } finally {

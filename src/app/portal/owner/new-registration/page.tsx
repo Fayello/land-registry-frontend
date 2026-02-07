@@ -1,8 +1,8 @@
 "use client";
-import { API_URL } from "@/config/api";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { CaseService } from "@/services/case.service";
 import { ArrowLeft, FileText, MapPin, Maximize2, Send } from "lucide-react";
 import Link from "next/link";
 
@@ -27,35 +27,23 @@ export default function NewRegistration() {
         e.preventDefault();
         setLoading(true);
 
-        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`${API_URL}/api/cases/submit`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    type: "new_registration",
-                    data: {
-                        locality: formData.locality,
-                        area: parseFloat(formData.area),
-                        parcel_number: formData.parcel_number,
-                        boundary: formData.boundary_json ? JSON.parse(formData.boundary_json) : null,
-                        checklist: {}
-                    }
-                }),
+            await CaseService.submitCase({
+                type: "new_registration",
+                data: {
+                    locality: formData.locality,
+                    area: parseFloat(formData.area),
+                    parcel_number: formData.parcel_number,
+                    boundary: formData.boundary_json ? JSON.parse(formData.boundary_json) : null,
+                    checklist: {}
+                }
             });
 
-            if (response.ok) {
-                alert("Application submitted successfully!");
-                router.push("/portal/owner");
-            } else {
-                alert("Submission failed.");
-            }
-        } catch (error) {
+            alert("Application submitted successfully!");
+            router.push("/portal/owner");
+        } catch (error: any) {
             console.error(error);
-            alert("Error submitting application.");
+            alert(error.message || "Error submitting application.");
         } finally {
             setLoading(false);
         }

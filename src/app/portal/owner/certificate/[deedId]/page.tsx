@@ -1,8 +1,8 @@
 "use client";
-import { API_URL } from "@/config/api";
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { RegistryService } from "@/services/registry.service";
 import {
     Shield,
     Printer,
@@ -10,15 +10,10 @@ import {
     Loader2,
     CheckCircle2,
     MapPin,
-    Maximize2,
-    Award,
-    Hash,
-    Building2,
-    Calendar,
-    Stamp,
-    FileText,
+    Locate,
     User,
-    Locate
+    Stamp,
+    FileText
 } from "lucide-react";
 import Link from "next/link";
 
@@ -30,13 +25,9 @@ export default function CertificatePage() {
 
     useEffect(() => {
         const fetchDeed = async () => {
-            const token = localStorage.getItem("token");
             try {
-                const response = await fetch(`${API_URL}/api/owner/deeds/${params.deedId}`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                if (!response.ok) throw new Error("Unauthorized or not found");
-                const data = await response.json();
+                if (typeof params.deedId !== 'string') return;
+                const data = await RegistryService.getDeedById(params.deedId);
                 setDeed(data);
             } catch (error) {
                 console.error("Error fetching deed:", error);

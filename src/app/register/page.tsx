@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { API_URL } from "@/config/api";
+import { AuthService } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import { ShieldCheck, User, Mail, Lock, Smartphone, CreditCard, ArrowRight, ShieldAlert, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
@@ -36,29 +36,19 @@ export default function RegisterPage() {
         }
 
         try {
-            const response = await fetch(`${API_URL}/api/auth/register`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    full_name: formData.full_name,
-                    email: formData.email,
-                    password: formData.password,
-                    national_id_number: formData.national_id_number,
-                    phone_number: formData.phone_number,
-                    role: "owner" // Defaulting to owner for this flow
-                }),
+            await AuthService.register({
+                full_name: formData.full_name,
+                email: formData.email,
+                password: formData.password,
+                national_id_number: formData.national_id_number,
+                phone_number: formData.phone_number,
+                role: "owner" // Defaulting to owner for this flow
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                setSuccess(true);
-                setTimeout(() => {
-                    router.push("/login");
-                }, 3000);
-            } else {
-                setError(data.message || "Registration failed. Please try again.");
-            }
+            setSuccess(true);
+            setTimeout(() => {
+                router.push("/login");
+            }, 3000);
         } catch (err) {
             setError("Failed to connect to the identity server.");
         } finally {

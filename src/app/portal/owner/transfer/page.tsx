@@ -1,8 +1,9 @@
 "use client";
-import { API_URL } from "@/config/api";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { CaseService } from "@/services/case.service";
+import { RegistryService } from "@/services/registry.service";
 import { ArrowLeft, Repeat, UserPlus, FileCheck, Send, Building2 } from "lucide-react";
 import Link from "next/link";
 
@@ -18,15 +19,10 @@ export default function TransferOwnership() {
     });
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        // Fetch real properties for the user
         const fetchProperties = async () => {
             try {
-                const res = await fetch(`${API_URL}/api/owner/properties`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                const data = await res.json();
-                setProperties(Array.isArray(data) ? data : []);
+                const data = await RegistryService.getOwnerProperties();
+                setProperties(data);
             } catch (e) {
                 console.error(e);
             }
@@ -40,36 +36,24 @@ export default function TransferOwnership() {
 
         setLoading(true);
 
-        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`${API_URL}/api/cases/submit`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    type: "transfer",
-                    related_parcel_id: properties.find(p => p.id === parseInt(formData.propertyId))?.parcel.id,
-                    data: {
-                        recipient_email: formData.recipientEmail,
-                        recipient_name: formData.recipientName,
-                        reason: formData.reason,
-                        original_deed_id: formData.propertyId,
-                        checklist: {}
-                    }
-                }),
+            await CaseService.submitCase({
+                type: "transfer",
+                related_parcel_id: properties.find(p => p.id === parseInt(formData.propertyId))?.parcel.id,
+                data: {
+                    recipient_email: formData.recipientEmail,
+                    recipient_name: formData.recipientName,
+                    reason: formData.reason,
+                    original_deed_id: formData.propertyId,
+                    checklist: {}
+                }
             });
 
-            if (response.ok) {
-                alert("Transfer request submitted! It will now be reviewed by the Ministry.");
-                router.push("/portal/owner");
-            } else {
-                alert("Transfer submission failed.");
-            }
-        } catch (error) {
+            alert("Transfer request submitted! It will now be reviewed by the Ministry.");
+            router.push("/portal/owner");
+        } catch (error: any) {
             console.error(error);
-            alert("Error submitting transfer.");
+            alert(error.message || "Error submitting transfer.");
         } finally {
             setLoading(false);
         }

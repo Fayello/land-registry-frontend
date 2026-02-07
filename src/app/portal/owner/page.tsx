@@ -1,7 +1,8 @@
 "use client";
-import { API_URL } from "@/config/api";
 
 import { useEffect, useState } from "react";
+import { RegistryService } from "@/services/registry.service";
+import { CaseService } from "@/services/case.service";
 import { Building2, FileText, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -32,19 +33,11 @@ export default function OwnerDashboard() {
         const fetchData = async () => {
             try {
                 // Fetch Properties
-                const pRes = await fetch(`${API_URL}/api/owner/properties`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                const pData = await pRes.json();
-                const validProperties = Array.isArray(pData) ? pData : [];
+                const validProperties = await RegistryService.getOwnerProperties();
                 setProperties(validProperties);
 
                 // Fetch Applications
-                const aRes = await fetch(`${API_URL}/api/owner/applications`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                const aData = await aRes.json();
-                const validApplications = Array.isArray(aData) ? aData : [];
+                const validApplications = await CaseService.getOwnerApplications();
                 setApplications(validApplications);
 
                 setStats({

@@ -1,8 +1,8 @@
 "use client";
-import { API_URL } from "@/config/api";
 
 import { useEffect, useState } from "react";
 import { History, FileText, Search, Download, Filter, Calendar, Loader2, MapPin } from "lucide-react";
+import { IngestionService } from "@/services/ingestion.service";
 
 export default function IngestionHistory() {
     const [history, setHistory] = useState<any[]>([]);
@@ -11,15 +11,9 @@ export default function IngestionHistory() {
 
     useEffect(() => {
         const fetchHistory = async () => {
-            const token = localStorage.getItem("token");
             try {
-                const response = await fetch(`${API_URL}/api/ingestion/history`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    setHistory(data);
-                }
+                const data = await IngestionService.getHistory();
+                setHistory(data);
             } catch (error) {
                 console.error("Failed to fetch history:", error);
             } finally {

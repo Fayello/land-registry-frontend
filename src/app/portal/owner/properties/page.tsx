@@ -1,7 +1,7 @@
 "use client";
-import { API_URL } from "@/config/api";
 
 import { useEffect, useState } from "react";
+import { RegistryService } from "@/services/registry.service";
 import { MapPin, QrCode, ShieldCheck, Loader2, ArrowRight, ExternalLink, X, Fingerprint, Globe, Shield } from "lucide-react";
 import Link from "next/link";
 
@@ -12,13 +12,9 @@ export default function MyProperties() {
 
     useEffect(() => {
         const fetchProperties = async () => {
-            const token = localStorage.getItem("token");
             try {
-                const response = await fetch(`${API_URL}/api/owner/properties`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                const data = await response.json();
-                setProperties(Array.isArray(data) ? data : []);
+                const data = await RegistryService.getOwnerProperties();
+                setProperties(data);
             } catch (error) {
                 console.error("Error fetching properties:", error);
             } finally {
@@ -144,7 +140,7 @@ export default function MyProperties() {
                             <div className="bg-white p-8 rounded-[40px] shadow-2xl inline-block relative group mb-10">
                                 <div className="absolute -inset-4 bg-blue-500/20 rounded-[48px] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                 <img
-                                    src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=http://localhost:3000/?num=${selectedQRDeed.deed_number}`}
+                                    src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${typeof window !== "undefined" ? window.location.origin : ""}/?num=${selectedQRDeed.deed_number}`}
                                     alt="Property QR"
                                     className="w-48 h-48 relative z-10"
                                 />

@@ -1,5 +1,5 @@
 "use client";
-import { API_URL } from "@/config/api";
+import { CaseService } from "@/services/case.service";
 
 import { useState, useEffect } from "react";
 import {
@@ -40,17 +40,14 @@ export default function UsersPage() {
     const [saving, setSaving] = useState(false);
 
     const fetchData = async () => {
-        const token = localStorage.getItem("token");
         try {
-            const [usersRes, rolesRes] = await Promise.all([
-                fetch(`${API_URL}/api/admin/users`, { headers: { "Authorization": `Bearer ${token}` } }),
-                fetch(`${API_URL}/api/admin/roles`, { headers: { "Authorization": `Bearer ${token}` } })
+            const [usersData, rolesData] = await Promise.all([
+                CaseService.getAdminUsers(),
+                CaseService.getAdminRoles()
             ]);
 
-            if (usersRes.ok && rolesRes.ok) {
-                setUsers(await usersRes.json());
-                setRoles(await rolesRes.json());
-            }
+            setUsers(usersData);
+            setRoles(rolesData);
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
@@ -66,22 +63,11 @@ export default function UsersPage() {
         if (!editingUser || !selectedRoleId) return;
 
         setSaving(true);
-        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`${API_URL}/api/admin/assign-role`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({ userId: editingUser.id, roleId: selectedRoleId })
-            });
-
-            if (response.ok) {
-                setEditingUser(null);
-                setSelectedRoleId(null);
-                await fetchData();
-            }
+            await CaseService.assignRole({ userId: editingUser.id, roleId: selectedRoleId });
+            setEditingUser(null);
+            setSelectedRoleId(null);
+            await fetchData();
         } catch (error) {
             console.error("Error assigning role:", error);
         } finally {

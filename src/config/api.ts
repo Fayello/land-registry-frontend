@@ -1,2 +1,1 @@
-import { API_URL } from "@/config/api";
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || `${API_URL}`;
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";

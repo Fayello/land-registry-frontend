@@ -1,9 +1,9 @@
 "use client";
-import { API_URL } from "@/config/api";
 
 import { useState, useEffect, useRef } from "react";
 import { Upload, FileText, CheckCircle, CheckCircle2, Shield, Loader2, Search, ArrowRight, Save, AlertCircle, Monitor, Cpu, Terminal, Camera, Video, X } from "lucide-react";
 import Link from "next/link";
+import { IngestionService } from "@/services/ingestion.service";
 
 export default function DigitizePage() {
     const [scanUrl, setScanUrl] = useState<string | null>(null);
@@ -81,15 +81,10 @@ export default function DigitizePage() {
         setIsScanning(true);
         setScanProgress(0);
         setScanPages([]);
-        const token = localStorage.getItem("token");
 
         try {
             // 1. Initial Handshake
-            const handshake = await fetch(`${API_URL}/api/ingestion/scanner/scan`, {
-                method: "POST",
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (!handshake.ok) throw new Error("Hardware Bridge Unavailable");
+            await IngestionService.scan();
 
             // 2. Multipage Simulation Flow
             const totalPages = 5;
@@ -102,7 +97,7 @@ export default function DigitizePage() {
             // 3. Finalize Ingestion
             await handleStartOCR("INDUSTRIAL_SCAN_BATCH.pdf");
         } catch (error: any) {
-            alert(error.message);
+            alert(error.message || "Hardware Bridge Unavailable");
         } finally {
             setIsScanning(false);
         }
@@ -111,32 +106,14 @@ export default function DigitizePage() {
     const handleStartOCR = async (fileName?: string) => {
         setIsExtracting(true);
         setExtractionError(null);
-        const token = localStorage.getItem("token");
         try {
             // Simulated delay for OCR post-scan
             await new Promise(resolve => setTimeout(resolve, isSpreadsheet ? 1500 : 2500));
 
-            const response = await fetch(`${API_URL}/api/ingestion/extract`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    scanUrl: "https://example.com/legacy_scan.pdf",
-                    fileName
-                })
+            const data = await IngestionService.extract({
+                scanUrl: "https://example.com/legacy_scan.pdf",
+                fileName
             });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                if (data.code === "SCHEMA_MISMATCH" || data.code === "VISION_REJECTION") {
-                    setExtractionError(data.message);
-                    return;
-                }
-                throw new Error(data.message || "Digital extraction failed.");
-            }
 
             // Hydrate the form
             setExtractedData(data.extractedData);
@@ -148,7 +125,11 @@ export default function DigitizePage() {
             setStep(2);
         } catch (error: any) {
             console.error("Extraction Error:", error);
-            setExtractionError(error.message || "Digital extraction failed.");
+            if (error.code === "SCHEMA_MISMATCH" || error.code === "VISION_REJECTION") {
+                setExtractionError(error.message);
+            } else {
+                setExtractionError(error.message || "Digital extraction failed.");
+            }
         } finally {
             setIsExtracting(false);
         }
@@ -157,24 +138,12 @@ export default function DigitizePage() {
     const handleConfirmDigitization = async () => {
         if (!ownerEmail) return alert("Please specify the current legal owner email");
         setIsSaving(true);
-        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`${API_URL}/api/ingestion/confirm`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    extractedData,
-                    scanUrl: "https://example.com/legacy_scan.pdf", // In production this would be the actual stored URL
-                    ownerEmail
-                })
+            await IngestionService.confirm({
+                extractedData,
+                scanUrl: "https://example.com/legacy_scan.pdf", // In production this would be the actual stored URL
+                ownerEmail
             });
-            if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.message);
-            }
             setStep(3);
         } catch (error: any) {
             alert(error.message);

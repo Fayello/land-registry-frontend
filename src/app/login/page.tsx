@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { API_URL } from "@/config/api";
+import { AuthService } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import { ShieldCheck, Lock, User, ArrowRight, Building2, ShieldAlert } from "lucide-react";
 import Link from "next/link";
@@ -19,35 +19,25 @@ export default function LoginPage() {
         setError("");
 
         try {
-            const response = await fetch(`${API_URL}/api/auth/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
-            });
+            const data = await AuthService.login({ email, password });
 
-            const data = await response.json();
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
 
-            if (response.ok) {
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("user", JSON.stringify(data.user));
+            // Backend roles are lowercase in UserRole enum
+            const role = data.user.role.toLowerCase();
 
-                // Backend roles are lowercase in UserRole enum
-                const role = data.user.role.toLowerCase();
-
-                if (role === "owner") {
-                    router.push("/portal/owner");
-                } else if (role === "admin") {
-                    router.push("/portal/admin");
-                } else if (role === "clerk") {
-                    router.push("/portal/clerk");
-                } else if (["conservator", "cadastre", "surveyor", "notary"].includes(role)) {
-                    router.push("/portal/authority");
-                } else {
-                    console.log("Unknown role, redirecting to home:", role);
-                    router.push("/");
-                }
+            if (role === "owner") {
+                router.push("/portal/owner");
+            } else if (role === "admin") {
+                router.push("/portal/admin");
+            } else if (role === "clerk") {
+                router.push("/portal/clerk");
+            } else if (["conservator", "cadastre", "surveyor", "notary"].includes(role)) {
+                router.push("/portal/authority");
             } else {
-                setError(data.message || "Invalid credentials. Access Denied.");
+                console.log("Unknown role, redirecting to home:", role);
+                router.push("/");
             }
         } catch (err) {
             setError("Identity server connection failed.");

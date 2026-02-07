@@ -1,8 +1,8 @@
 "use client";
-import { API_URL } from "@/config/api";
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { CaseService } from "@/services/case.service";
 import {
     Clock, CheckCircle, XCircle, FileText, Loader2,
     ArrowLeft, MapPin, Calendar, User, ShieldCheck, AlertCircle, Megaphone, ArrowRight
@@ -17,13 +17,9 @@ export default function ApplicationDetail() {
 
     useEffect(() => {
         const fetchDetail = async () => {
-            const token = localStorage.getItem("token");
             try {
-                const response = await fetch(`${API_URL}/api/owner/applications/${params.id}`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                if (!response.ok) throw new Error("Not found");
-                const data = await response.json();
+                if (typeof params.id !== 'string') return;
+                const data = await CaseService.getApplicationById(params.id);
                 setApplication(data);
             } catch (error) {
                 console.error("Error fetching application:", error);
@@ -52,17 +48,13 @@ export default function ApplicationDetail() {
     };
 
     const handlePayment = async () => {
-        const token = localStorage.getItem("token");
         try {
-            const res = await fetch(`${API_URL}/api/cases/${params.id}/pay-fees`, {
-                method: "POST",
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (res.ok) {
-                window.location.reload();
-            }
+            if (typeof params.id !== 'string') return;
+            await CaseService.payFees(params.id);
+            window.location.reload();
         } catch (error) {
             console.error("Payment error:", error);
+            alert("Payment failed. Please try again.");
         }
     };
 

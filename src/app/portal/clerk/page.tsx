@@ -1,8 +1,8 @@
 "use client";
-import { API_URL } from "@/config/api";
 
 import { useState } from "react";
-import { LayoutDashboard, Upload, History, Database, Shield, ArrowRight, Loader2 } from "lucide-react";
+import { IngestionService } from "@/services/ingestion.service";
+import { LayoutDashboard, Upload, History, Database, Shield, ArrowRight, Loader2, FileText } from "lucide-react";
 import Link from "next/link";
 
 export default function ClerkDashboard() {
@@ -16,17 +16,12 @@ export default function ClerkDashboard() {
 
     const handleInitializeScanner = async () => {
         setScannerStatus({ ...scannerStatus, initializing: true });
-        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`${API_URL}/api/ingestion/scanner/initialize`, {
-                method: "POST",
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            const data = await response.json();
+            const data = await IngestionService.initializeScanner();
             setScannerStatus({ isReady: true, initializing: false, driver: data.driver });
-        } catch (error) {
+        } catch (error: any) {
             setScannerStatus({ ...scannerStatus, initializing: false });
-            alert("Hardware discovery failed. Ensure bridge-service is running.");
+            alert(error.message || "Hardware discovery failed. Ensure bridge-service is running.");
         }
     };
 
@@ -120,9 +115,3 @@ export default function ClerkDashboard() {
         </div>
     );
 }
-
-const FileText = ({ size, className }: { size: number, className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><line x1="10" y1="9" x2="8" y2="9" />
-    </svg>
-);

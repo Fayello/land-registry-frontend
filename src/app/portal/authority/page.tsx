@@ -1,7 +1,7 @@
 "use client";
-import { API_URL } from "@/config/api";
 
 import { useEffect, useState, useCallback } from "react";
+import { CaseService } from "@/services/case.service";
 import { ShieldAlert, CheckCircle, Clock, Search, Filter, Loader2, ArrowRight, Shield, FileText, TrendingUp, Users, Calendar, MapPin, Landmark, LayoutDashboard, Database, Scroll } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,16 +17,10 @@ export default function AuthorityDashboard() {
     const [showHistory, setShowHistory] = useState(false);
 
     const fetchPendingCases = useCallback(async (historyMode: boolean = false) => {
-        const token = localStorage.getItem("token");
         setLoading(true);
         try {
-            const response = await fetch(`${API_URL}/api/cases/pending?history=${historyMode}`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setCases(data);
-            }
+            const data = await CaseService.getAuthorityQueue(historyMode);
+            setCases(data);
         } catch (error) {
             console.error("Fetch cases error:", error);
         } finally {
@@ -186,9 +180,9 @@ export default function AuthorityDashboard() {
                             <div key={c.id} className="p-10 flex flex-col md:flex-row justify-between items-center group hover:bg-slate-50/50 transition-all">
                                 <div className="flex gap-8 items-start">
                                     <div className={`p-5 rounded-[28px] border shadow-sm ${c.status === 'approved' ? 'bg-green-50 border-green-100 text-green-600' :
-                                            c.status === 'rejected' ? 'bg-red-50 border-red-100 text-red-600' :
-                                                c.type === 'new_registration' ? 'bg-blue-50 border-blue-100 text-blue-600' :
-                                                    'bg-orange-50 border-orange-100 text-orange-600'
+                                        c.status === 'rejected' ? 'bg-red-50 border-red-100 text-red-600' :
+                                            c.type === 'new_registration' ? 'bg-blue-50 border-blue-100 text-blue-600' :
+                                                'bg-orange-50 border-orange-100 text-orange-600'
                                         }`}>
                                         {c.status === 'approved' ? <CheckCircle size={28} /> :
                                             c.status === 'rejected' ? <ShieldAlert size={28} /> :
@@ -198,8 +192,8 @@ export default function AuthorityDashboard() {
                                         <div className="flex items-center gap-4 mb-2">
                                             <h3 className="font-black text-xl text-slate-900 uppercase tracking-tighter leading-none">{c.type.replace('_', ' ')}</h3>
                                             <span className={`text-[10px] font-black px-3 py-1 rounded-full border uppercase tracking-widest shadow-sm ${c.status === 'approved' ? 'bg-green-500 text-white border-green-600' :
-                                                    c.status === 'rejected' ? 'bg-red-500 text-white border-red-600' :
-                                                        'bg-white text-slate-500 border-slate-200'
+                                                c.status === 'rejected' ? 'bg-red-500 text-white border-red-600' :
+                                                    'bg-white text-slate-500 border-slate-200'
                                                 }`}>
                                                 {c.status.replace('_', ' ')}
                                             </span>

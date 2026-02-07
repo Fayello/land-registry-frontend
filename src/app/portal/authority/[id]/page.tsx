@@ -1,10 +1,10 @@
 "use client";
-import { API_URL } from "@/config/api";
 
 import { useState, useEffect, useCallback } from "react";
 import { CheckCircle, XCircle, FileText, Shield, AlertTriangle, Loader2, Download, ArrowLeft, MapPin, User, Calendar, Search, Megaphone, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { CaseService } from "@/services/case.service";
 import ExaminationChecklist from "../components/ExaminationChecklist";
 import PipelineStepper from "../components/PipelineStepper";
 
@@ -20,13 +20,8 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
     const [userRoleName, setUserRoleName] = useState<string>("");
 
     const fetchCaseDetails = useCallback(async () => {
-        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`${API_URL}/api/cases/${params.id}`, {
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (!response.ok) throw new Error("Case not found");
-            const data = await response.json();
+            const data = await CaseService.getApplicationById(params.id);
             setCaseData(data);
             setChecklist(data.data?.checklist || {});
 
@@ -82,28 +77,14 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
         }
 
         setStatus("creating");
-        const token = localStorage.getItem("token");
         const user = JSON.parse(localStorage.getItem("user") || "{}");
 
         try {
-            const response = await fetch(`${API_URL}/api/cases/${params.id}/approve`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    checklist,
-                    conservator_id: user.id
-                })
-            });
+            const data = await CaseService.performAction(params.id, 'approve', {
+                checklist,
+                conservator_id: user.id
+            }, "POST");
 
-            if (!response.ok) {
-                const err = await response.json();
-                throw new Error(err.message || "Approval failed");
-            }
-
-            const data = await response.json();
             setStatus("approved");
             setResult({
                 deed_number: data.case?.related_parcel?.parcel_number || "DEED-ISSUED",
@@ -120,17 +101,8 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
         if (!reason) return;
 
         setActionLoading(true);
-        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`${API_URL}/api/cases/${params.id}/reject`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({ reason })
-            });
-            if (!response.ok) throw new Error("Rejection failed");
+            await CaseService.performAction(params.id, 'reject', { reason }, "PUT");
             await fetchCaseDetails();
             alert("Case officially rejected.");
         } catch (e: any) {
@@ -143,17 +115,8 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
     const handleScheduleVisit = async () => {
         if (!visitDate) return alert("Please select a visit date");
         setActionLoading(true);
-        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`${API_URL}/api/cases/${params.id}/schedule-visit`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({ visitDate })
-            });
-            if (!response.ok) throw new Error("Failed to schedule visit");
+            await CaseService.performAction(params.id, 'schedule-visit', { visitDate }, "PUT");
             await fetchCaseDetails();
         } catch (e: any) {
             alert(e.message);
@@ -164,13 +127,8 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
 
     const handleStartNotice = async () => {
         setActionLoading(true);
-        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`${API_URL}/api/cases/${params.id}/start-notice`, {
-                method: "PUT",
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (!response.ok) throw new Error("Failed to start notice");
+            await CaseService.performAction(params.id, 'start-notice', {}, "PUT");
             await fetchCaseDetails();
         } catch (e: any) {
             alert(e.message);
@@ -181,13 +139,8 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
 
     const handleValidateTechnical = async () => {
         setActionLoading(true);
-        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`${API_URL}/api/cases/${params.id}/validate-technical`, {
-                method: "PUT",
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (!response.ok) throw new Error("Failed to validate technical plan");
+            await CaseService.performAction(params.id, 'validate-technical', {}, "PUT");
             await fetchCaseDetails();
         } catch (e: any) {
             alert(e.message);
@@ -201,17 +154,8 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
         if (!reason) return;
 
         setActionLoading(true);
-        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`${API_URL}/api/cases/${params.id}/technical-query`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({ reason })
-            });
-            if (!response.ok) throw new Error("Failed to issue technical query");
+            await CaseService.performAction(params.id, 'technical-query', { reason }, "PUT");
             await fetchCaseDetails();
             alert("Technical query issued to field surveyor.");
         } catch (e: any) {
@@ -223,17 +167,8 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
 
     const handleUploadReport = async () => {
         setActionLoading(true);
-        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`${API_URL}/api/cases/${params.id}/upload-report`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({ reportUrl: `https://ipfs.io/ipfs/QmReport${params.id}` })
-            });
-            if (!response.ok) throw new Error("Failed to upload report");
+            await CaseService.performAction(params.id, 'upload-report', { reportUrl: `https://ipfs.io/ipfs/QmReport${params.id}` }, "PUT");
             await fetchCaseDetails();
         } catch (e: any) {
             alert(e.message);
@@ -244,13 +179,8 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
 
     const handleRequestGovernor = async () => {
         setActionLoading(true);
-        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`${API_URL}/api/cases/${params.id}/request-governor-approval`, {
-                method: "PUT",
-                headers: { "Authorization": `Bearer ${token}` }
-            });
-            if (!response.ok) throw new Error("Failed to request governor approval");
+            await CaseService.performAction(params.id, 'request-governor-approval', {}, "PUT");
             await fetchCaseDetails();
         } catch (e: any) {
             alert(e.message);
@@ -261,17 +191,8 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
 
     const handleAuthorizeCommission = async () => {
         setActionLoading(true);
-        const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`${API_URL}/api/cases/${params.id}/authorize-commission`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({ checklist })
-            });
-            if (!response.ok) throw new Error("Failed to authorize commission");
+            await CaseService.performAction(params.id, 'authorize-commission', { checklist }, "PUT");
             await fetchCaseDetails();
             alert("Administrative vetting complete. Field commission authorized.");
         } catch (e: any) {
@@ -283,7 +204,6 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
 
     const handleDownload = (filename: string) => {
         alert(`Downloading ${filename}... (Simulated)`);
-        // In a real app, this would trigger a file download from S3/IPFS
     };
 
     if (status === "loading") {
@@ -395,7 +315,6 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
                         <section>
                             <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">Verification Evidence</h3>
                             <div className="space-y-3">
-                                {/* Technical File: Visible to all, but focus of Cadastre */}
                                 <div className="group flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100 hover:border-blue-200 transition-all shadow-sm">
                                     <div className="flex items-center gap-3">
                                         <div className="bg-blue-50 p-2 rounded-lg"><FileText size={18} className="text-blue-600" /></div>
@@ -409,7 +328,6 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
                                     </button>
                                 </div>
 
-                                {/* Legal/Tax Files: HIDDEN from Cadastre (SOD) */}
                                 {!userPermissions.includes("cases.validate_technical") && (
                                     <>
                                         <div className="group flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100 hover:border-teal-200 transition-all shadow-sm">

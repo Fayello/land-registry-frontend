@@ -1,7 +1,7 @@
 "use client";
-import { API_URL } from "@/config/api";
 
 import { useEffect, useState } from "react";
+import { CaseService } from "@/services/case.service";
 import { Clock, CheckCircle, XCircle, FileText, Loader2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -11,13 +11,9 @@ export default function MyApplications() {
 
     useEffect(() => {
         const fetchApplications = async () => {
-            const token = localStorage.getItem("token");
             try {
-                const response = await fetch(`${API_URL}/api/owner/applications`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
-                const data = await response.json();
-                setApplications(Array.isArray(data) ? data : []);
+                const data = await CaseService.getOwnerApplications();
+                setApplications(data);
             } catch (error) {
                 console.error("Error fetching applications:", error);
             } finally {
