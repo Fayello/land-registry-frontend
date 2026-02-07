@@ -105,14 +105,14 @@ export default function RegisterPage() {
                 <p className="text-slate-500 text-sm font-medium">Join the digital transformation of Cameroon's land administration</p>
             </div>
 
-            <div className="w-full max-w-2xl bg-white rounded-[48px] shadow-2xl shadow-slate-200 border border-slate-200 p-12 relative overflow-hidden">
+            <div className="w-full max-w-2xl bg-white rounded-[32px] md:rounded-[48px] shadow-2xl shadow-slate-200 border border-slate-200 p-6 md:p-12 relative overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-teal-500 via-emerald-500 to-teal-500"></div>
 
-                <form onSubmit={handleRegister} className="space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <form onSubmit={handleRegister} className="space-y-4 md:space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                         {/* Full Name */}
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Legal Full Name</label>
+                            <label className="text-[10px] md:text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Legal Full Name</label>
                             <div className="relative group">
                                 <User className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-teal-600 transition-colors" />
                                 <input
@@ -120,7 +120,7 @@ export default function RegisterPage() {
                                     name="full_name"
                                     type="text"
                                     placeholder="John Doe"
-                                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-14 pr-4 py-4 rounded-3xl focus:outline-none focus:border-teal-500 transition-all font-medium"
+                                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-14 pr-4 py-3 md:py-4 rounded-3xl focus:outline-none focus:border-teal-500 transition-all font-medium text-sm md:text-base"
                                     value={formData.full_name}
                                     onChange={handleChange}
                                 />
@@ -129,7 +129,7 @@ export default function RegisterPage() {
 
                         {/* Email */}
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Official Email</label>
+                            <label className="text-[10px] md:text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Official Email</label>
                             <div className="relative group">
                                 <Mail className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-teal-600 transition-colors" />
                                 <input
@@ -137,7 +137,7 @@ export default function RegisterPage() {
                                     name="email"
                                     type="email"
                                     placeholder="name@example.com"
-                                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-14 pr-4 py-4 rounded-3xl focus:outline-none focus:border-teal-500 transition-all font-medium"
+                                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-14 pr-4 py-3 md:py-4 rounded-3xl focus:outline-none focus:border-teal-500 transition-all font-medium text-sm md:text-base"
                                     value={formData.email}
                                     onChange={handleChange}
                                 />
@@ -146,7 +146,7 @@ export default function RegisterPage() {
 
                         {/* Phone Number */}
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Contact Phone</label>
+                            <label className="text-[10px] md:text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Contact Phone</label>
                             <div className="relative group">
                                 <Smartphone className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-teal-600 transition-colors" />
                                 <input
@@ -154,7 +154,7 @@ export default function RegisterPage() {
                                     name="phone_number"
                                     type="tel"
                                     placeholder="+237 6XX XXX XXX"
-                                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-14 pr-4 py-4 rounded-3xl focus:outline-none focus:border-teal-500 transition-all font-medium"
+                                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-14 pr-4 py-3 md:py-4 rounded-3xl focus:outline-none focus:border-teal-500 transition-all font-medium text-sm md:text-base"
                                     value={formData.phone_number}
                                     onChange={handleChange}
                                 />
@@ -163,7 +163,7 @@ export default function RegisterPage() {
 
                         {/* National ID */}
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">National ID (CNI)</label>
+                            <label className="text-[10px] md:text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">National ID (CNI)</label>
                             <div className="relative group">
                                 <CreditCard className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-teal-600 transition-colors" />
                                 <input
@@ -171,7 +171,7 @@ export default function RegisterPage() {
                                     name="national_id_number"
                                     type="text"
                                     placeholder="ID-XXXXXXXX-X"
-                                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-14 pr-4 py-4 rounded-3xl focus:outline-none focus:border-teal-500 transition-all font-medium"
+                                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-14 pr-4 py-3 md:py-4 rounded-3xl focus:outline-none focus:border-teal-500 transition-all font-medium text-sm md:text-base"
                                     value={formData.national_id_number}
                                     onChange={handleChange}
                                 />
@@ -180,7 +180,7 @@ export default function RegisterPage() {
 
                         {/* Password */}
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Access Password</label>
+                            <label className="text-[10px] md:text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Access Password</label>
                             <div className="relative group">
                                 <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-teal-600 transition-colors" />
                                 <input
@@ -188,7 +188,7 @@ export default function RegisterPage() {
                                     name="password"
                                     type="password"
                                     placeholder="••••••••••••"
-                                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-14 pr-4 py-4 rounded-3xl focus:outline-none focus:border-teal-500 transition-all font-medium"
+                                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-14 pr-4 py-3 md:py-4 rounded-3xl focus:outline-none focus:border-teal-500 transition-all font-medium text-sm md:text-base"
                                     value={formData.password}
                                     onChange={handleChange}
                                 />
@@ -197,7 +197,7 @@ export default function RegisterPage() {
 
                         {/* Confirm Password */}
                         <div className="space-y-2">
-                            <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Confirm Password</label>
+                            <label className="text-[10px] md:text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Confirm Password</label>
                             <div className="relative group">
                                 <Lock className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-teal-600 transition-colors" />
                                 <input
@@ -205,7 +205,7 @@ export default function RegisterPage() {
                                     name="confirm_password"
                                     type="password"
                                     placeholder="••••••••••••"
-                                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-14 pr-4 py-4 rounded-3xl focus:outline-none focus:border-teal-500 transition-all font-medium"
+                                    className="w-full bg-slate-50 border border-slate-200 text-slate-900 pl-14 pr-4 py-3 md:py-4 rounded-3xl focus:outline-none focus:border-teal-500 transition-all font-medium text-sm md:text-base"
                                     value={formData.confirm_password}
                                     onChange={handleChange}
                                 />
@@ -224,7 +224,7 @@ export default function RegisterPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-slate-900 hover:bg-slate-800 text-white py-6 rounded-3xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-4 transition-all active:scale-[0.98] disabled:opacity-50 shadow-2xl shadow-slate-900/20 group"
+                            className="w-full bg-slate-900 hover:bg-slate-800 text-white py-4 md:py-6 rounded-3xl font-black text-sm uppercase tracking-widest flex items-center justify-center gap-4 transition-all active:scale-[0.98] disabled:opacity-50 shadow-2xl shadow-slate-900/20 group"
                         >
                             {loading ? "Establishing Identity..." : (
                                 <>

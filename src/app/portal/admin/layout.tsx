@@ -12,7 +12,9 @@ import {
     Loader2,
     Shield,
     Settings,
-    UserCircle
+    UserCircle,
+    Menu,
+    X
 } from "lucide-react";
 
 export default function AdminLayout({
@@ -24,6 +26,7 @@ export default function AdminLayout({
     const pathname = usePathname();
     const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
     const [userName, setUserName] = useState("");
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -75,10 +78,39 @@ export default function AdminLayout({
     ];
 
     return (
-        <div className="flex min-h-screen bg-slate-50 font-sans selection:bg-teal-500/30">
+        <div className="flex min-h-screen bg-slate-50 font-sans selection:bg-teal-500/30 flex-col md:flex-row">
+            {/* Mobile Header */}
+            <div className="md:hidden bg-white border-b border-slate-200 p-4 flex items-center justify-between sticky top-0 z-30 shadow-sm">
+                <div className="flex items-center gap-2">
+                    <div className="bg-teal-600 p-1 rounded-md">
+                        <Shield size={16} className="text-white" />
+                    </div>
+                    <span className="font-bold text-slate-900 text-sm tracking-tight">MINDAF.admin</span>
+                </div>
+                <button
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                    className="p-2 rounded-lg hover:bg-slate-100 transition-colors text-slate-600"
+                >
+                    {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
+            </div>
+
+            {/* Sidebar Overlay */}
+            {sidebarOpen && (
+                <div
+                    className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
+                    onClick={() => setSidebarOpen(false)}
+                />
+            )}
+
             {/* Sidebar */}
-            <aside className="w-72 bg-white border-r border-slate-200 flex flex-col fixed h-full z-30">
-                <div className="p-8 border-b border-slate-100">
+            <aside className={`
+                fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-slate-200 flex flex-col 
+                transition-transform duration-300 ease-in-out shadow-2xl md:shadow-none
+                ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
+                md:translate-x-0 md:fixed
+            `}>
+                <div className="p-8 border-b border-slate-100 hidden md:block">
                     <div className="flex items-center gap-3 mb-1">
                         <div className="bg-teal-600 p-1.5 rounded-lg">
                             <Shield size={20} className="text-white" />
@@ -88,6 +120,16 @@ export default function AdminLayout({
                     <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em] ml-1">Central Authority</p>
                 </div>
 
+                <div className="p-6 border-b border-slate-100 md:hidden flex items-center gap-3">
+                    <div className="bg-teal-600 p-1.5 rounded-lg">
+                        <Shield size={20} className="text-white" />
+                    </div>
+                    <div>
+                        <h2 className="text-lg font-black text-slate-900 tracking-tighter">MINDAF.admin</h2>
+                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Navigation</p>
+                    </div>
+                </div>
+
                 <div className="flex-1 px-4 py-8 space-y-2 overflow-y-auto">
                     {navItems.map((item) => {
                         const isActive = pathname === item.href;
@@ -95,6 +137,7 @@ export default function AdminLayout({
                             <Link
                                 key={item.href}
                                 href={item.href}
+                                onClick={() => setSidebarOpen(false)}
                                 className={`flex items-center gap-4 px-6 py-4 rounded-[20px] transition-all duration-300 group ${isActive
                                     ? "bg-slate-900 text-white shadow-lg shadow-slate-900/10 font-black"
                                     : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
@@ -130,7 +173,7 @@ export default function AdminLayout({
             </aside>
 
             {/* Main Content Area */}
-            <main className="flex-1 ml-72 p-12 min-h-screen bg-slate-50">
+            <main className="flex-1 md:ml-72 p-4 md:p-12 min-h-[calc(100vh-64px)] md:min-h-screen bg-slate-50 transition-all duration-300">
                 <div className="w-full">
                     {children}
                 </div>

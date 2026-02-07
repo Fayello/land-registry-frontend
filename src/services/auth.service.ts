@@ -25,4 +25,10 @@ export const AuthService = {
             body: data,
         });
     },
+    changePassword: async (data: { userId: number | null; newPassword: string }) => {
+        return request<any>("/api/auth/change-password", {
+            method: "POST",
+            body: data,
+        });
+    },
 };
