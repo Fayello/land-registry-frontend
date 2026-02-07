@@ -132,7 +132,7 @@ export default function LoginPage() {
                             Don't have an account? Create one
                             <ArrowRight size={14} />
                         </Link>
-                        <Link href="/" className="text-slate-400 hover:text-slate-600 text-[10px] font-bold uppercase tracking-widest transition-colors">
+                        <Link href="/forgot-password" className="text-slate-400 hover:text-slate-600 text-[10px] font-bold uppercase tracking-widest transition-colors">
                             Forgot your password?
                         </Link>
                     </div>

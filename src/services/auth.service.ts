@@ -13,4 +13,16 @@ export const AuthService = {
             body: data,
         });
     },
+    forgotPassword: async (email: string) => {
+        return request<any>("/api/auth/forgot-password", {
+            method: "POST",
+            body: { email },
+        });
+    },
+    resetPassword: async (data: any) => {
+        return request<any>("/api/auth/reset-password", {
+            method: "POST",
+            body: data,
+        });
+    },
 };
