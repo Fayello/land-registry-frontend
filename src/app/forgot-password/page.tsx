@@ -62,7 +62,7 @@ export default function ForgotPasswordPage() {
                     <div className="bg-blue-600 p-2 rounded-xl text-white shadow-lg shadow-blue-600/20">
                         <KeyRound className="w-8 h-8" />
                     </div>
-                    <span className="text-2xl font-black text-slate-900 tracking-tight">LandRegistry<span className="text-blue-600">.gov</span></span>
+                    <span className="text-2xl font-black text-slate-900 tracking-tight">Digifoncier</span>
                 </Link>
                 <div className="h-1 w-12 bg-blue-600 mx-auto rounded-full mb-6"></div>
                 <h2 className="text-2xl font-bold text-slate-900 mb-2">
