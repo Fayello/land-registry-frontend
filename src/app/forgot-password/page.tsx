@@ -22,7 +22,8 @@ export default function ForgotPasswordPage() {
             await AuthService.forgotPassword(email);
             setStep(2);
         } catch (err: any) {
-            setError(err.message || "Failed to send reset code. Please try again.");
+            const detail = err.data?.details || err.message || "Failed to send reset code.";
+            setError(detail);
         } finally {
             setLoading(false);
         }
