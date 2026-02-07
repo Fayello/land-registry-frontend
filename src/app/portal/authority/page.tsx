@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { useEffect, useState, useCallback } from "react";
 import { ShieldAlert, CheckCircle, Clock, Search, Filter, Loader2, ArrowRight, Shield, FileText, TrendingUp, Users, Calendar, MapPin, Landmark, LayoutDashboard, Database, Scroll } from "lucide-react";
@@ -19,7 +20,7 @@ export default function AuthorityDashboard() {
         const token = localStorage.getItem("token");
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost:3001/api/cases/pending?history=${historyMode}`, {
+            const response = await fetch(`${API_URL}/api/cases/pending?history=${historyMode}`, {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             if (response.ok) {

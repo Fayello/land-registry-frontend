@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { API_URL } from "@/config/api";
 import { useRouter } from "next/navigation";
 import { ShieldCheck, User, Mail, Lock, Smartphone, CreditCard, ArrowRight, ShieldAlert, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
@@ -35,7 +36,7 @@ export default function RegisterPage() {
         }
 
         try {
-            const response = await fetch("http://localhost:3001/api/auth/register", {
+            const response = await fetch(`${API_URL}/api/auth/register`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

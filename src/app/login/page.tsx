@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { API_URL } from "@/config/api";
 import { useRouter } from "next/navigation";
 import { ShieldCheck, Lock, User, ArrowRight, Building2, ShieldAlert } from "lucide-react";
 import Link from "next/link";
@@ -18,7 +19,7 @@ export default function LoginPage() {
         setError("");
 
         try {
-            const response = await fetch("http://localhost:3001/api/auth/login", {
+            const response = await fetch(`${API_URL}/api/auth/login`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),

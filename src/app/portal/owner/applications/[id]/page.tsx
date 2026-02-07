@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -18,7 +19,7 @@ export default function ApplicationDetail() {
         const fetchDetail = async () => {
             const token = localStorage.getItem("token");
             try {
-                const response = await fetch(`http://localhost:3001/api/owner/applications/${params.id}`, {
+                const response = await fetch(`${API_URL}/api/owner/applications/${params.id}`, {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
                 if (!response.ok) throw new Error("Not found");
@@ -53,7 +54,7 @@ export default function ApplicationDetail() {
     const handlePayment = async () => {
         const token = localStorage.getItem("token");
         try {
-            const res = await fetch(`http://localhost:3001/api/cases/${params.id}/pay-fees`, {
+            const res = await fetch(`${API_URL}/api/cases/${params.id}/pay-fees`, {
                 method: "POST",
                 headers: { "Authorization": `Bearer ${token}` }
             });

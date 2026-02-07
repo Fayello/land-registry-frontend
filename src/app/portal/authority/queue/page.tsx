@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { useEffect, useState, useCallback } from "react";
 import { ShieldAlert, CheckCircle, Clock, Search, Filter, Loader2, ArrowRight, Shield, FileText, TrendingUp, Users, Calendar, MapPin, Landmark, LayoutDashboard, Database, Scroll } from "lucide-react";
@@ -17,7 +18,7 @@ export default function QueuePage() {
     const fetchPendingCases = useCallback(async () => {
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch("http://localhost:3001/api/cases/pending", {
+            const response = await fetch(`${API_URL}/api/cases/pending`, {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             if (response.ok) {

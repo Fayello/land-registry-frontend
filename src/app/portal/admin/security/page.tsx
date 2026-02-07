@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { ShieldCheck, Lock, Key, Smartphone, AlertTriangle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -12,7 +13,7 @@ export default function SecurityPage() {
         const fetchConfig = async () => {
             const token = localStorage.getItem("token");
             try {
-                const response = await fetch("http://localhost:3001/api/admin/config", {
+                const response = await fetch(`${API_URL}/api/admin/config`, {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
                 if (response.ok) {
@@ -30,7 +31,7 @@ export default function SecurityPage() {
     const updateConfig = async (key: string, value: string) => {
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch("http://localhost:3001/api/admin/config", {
+            const response = await fetch(`${API_URL}/api/admin/config`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -31,7 +32,7 @@ export default function CertificatePage() {
         const fetchDeed = async () => {
             const token = localStorage.getItem("token");
             try {
-                const response = await fetch(`http://localhost:3001/api/owner/deeds/${params.deedId}`, {
+                const response = await fetch(`${API_URL}/api/owner/deeds/${params.deedId}`, {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
                 if (!response.ok) throw new Error("Unauthorized or not found");

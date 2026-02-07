@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { useState, useEffect } from "react";
 import {
@@ -39,8 +40,8 @@ export default function RolesPage() {
         const token = localStorage.getItem("token");
         try {
             const [rolesRes, permsRes] = await Promise.all([
-                fetch("http://localhost:3001/api/admin/roles", { headers: { "Authorization": `Bearer ${token}` } }),
-                fetch("http://localhost:3001/api/admin/permissions", { headers: { "Authorization": `Bearer ${token}` } })
+                fetch(`${API_URL}/api/admin/roles`, { headers: { "Authorization": `Bearer ${token}` } }),
+                fetch(`${API_URL}/api/admin/permissions`, { headers: { "Authorization": `Bearer ${token}` } })
             ]);
 
             if (rolesRes.ok && permsRes.ok) {
@@ -74,7 +75,7 @@ export default function RolesPage() {
         setSaving(true);
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:3001/api/admin/roles/${roleId}`, {
+            const response = await fetch(`${API_URL}/api/admin/roles/${roleId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -98,7 +99,7 @@ export default function RolesPage() {
         setSaving(true);
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch("http://localhost:3001/api/admin/roles", {
+            const response = await fetch(`${API_URL}/api/admin/roles`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

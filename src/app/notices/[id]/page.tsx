@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { useEffect, useState } from "react";
 import {
@@ -44,7 +45,7 @@ export default function NoticeDetailPage({ params }: { params: { id: string } })
     useEffect(() => {
         const fetchNotice = async () => {
             try {
-                const res = await fetch(`http://localhost:3001/api/cases/notices/${params.id}`);
+                const res = await fetch(`${API_URL}/api/cases/notices/${params.id}`);
                 if (res.ok) {
                     setNotice(await res.json());
                 }

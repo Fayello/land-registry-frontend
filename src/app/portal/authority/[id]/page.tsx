@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { useState, useEffect, useCallback } from "react";
 import { CheckCircle, XCircle, FileText, Shield, AlertTriangle, Loader2, Download, ArrowLeft, MapPin, User, Calendar, Search, Megaphone, ShieldCheck } from "lucide-react";
@@ -21,7 +22,7 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
     const fetchCaseDetails = useCallback(async () => {
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:3001/api/cases/${params.id}`, {
+            const response = await fetch(`${API_URL}/api/cases/${params.id}`, {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             if (!response.ok) throw new Error("Case not found");
@@ -85,7 +86,7 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
         const user = JSON.parse(localStorage.getItem("user") || "{}");
 
         try {
-            const response = await fetch(`http://localhost:3001/api/cases/${params.id}/approve`, {
+            const response = await fetch(`${API_URL}/api/cases/${params.id}/approve`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -121,7 +122,7 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
         setActionLoading(true);
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:3001/api/cases/${params.id}/reject`, {
+            const response = await fetch(`${API_URL}/api/cases/${params.id}/reject`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -144,7 +145,7 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
         setActionLoading(true);
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:3001/api/cases/${params.id}/schedule-visit`, {
+            const response = await fetch(`${API_URL}/api/cases/${params.id}/schedule-visit`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -165,7 +166,7 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
         setActionLoading(true);
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:3001/api/cases/${params.id}/start-notice`, {
+            const response = await fetch(`${API_URL}/api/cases/${params.id}/start-notice`, {
                 method: "PUT",
                 headers: { "Authorization": `Bearer ${token}` }
             });
@@ -182,7 +183,7 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
         setActionLoading(true);
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:3001/api/cases/${params.id}/validate-technical`, {
+            const response = await fetch(`${API_URL}/api/cases/${params.id}/validate-technical`, {
                 method: "PUT",
                 headers: { "Authorization": `Bearer ${token}` }
             });
@@ -202,7 +203,7 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
         setActionLoading(true);
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:3001/api/cases/${params.id}/technical-query`, {
+            const response = await fetch(`${API_URL}/api/cases/${params.id}/technical-query`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -224,7 +225,7 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
         setActionLoading(true);
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:3001/api/cases/${params.id}/upload-report`, {
+            const response = await fetch(`${API_URL}/api/cases/${params.id}/upload-report`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -245,7 +246,7 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
         setActionLoading(true);
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:3001/api/cases/${params.id}/request-governor-approval`, {
+            const response = await fetch(`${API_URL}/api/cases/${params.id}/request-governor-approval`, {
                 method: "PUT",
                 headers: { "Authorization": `Bearer ${token}` }
             });
@@ -262,7 +263,7 @@ export default function ReviewPage({ params }: { params: { id: string } }) {
         setActionLoading(true);
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch(`http://localhost:3001/api/cases/${params.id}/authorize-commission`, {
+            const response = await fetch(`${API_URL}/api/cases/${params.id}/authorize-commission`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

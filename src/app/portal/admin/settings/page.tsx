@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { Settings, Save, ArrowLeft, Globe, Megaphone } from "lucide-react";
 import Link from "next/link";
@@ -13,7 +14,7 @@ export default function SettingsPage() {
         const fetchConfig = async () => {
             const token = localStorage.getItem("token");
             try {
-                const response = await fetch("http://localhost:3001/api/admin/config", {
+                const response = await fetch(`${API_URL}/api/admin/config`, {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
                 if (response.ok) {
@@ -32,7 +33,7 @@ export default function SettingsPage() {
         setSaving(true);
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch("http://localhost:3001/api/admin/config", {
+            const response = await fetch(`${API_URL}/api/admin/config`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

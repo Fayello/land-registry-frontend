@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { useState, useEffect } from "react";
 import {
@@ -31,7 +32,7 @@ export default function AuditLogPage() {
         const fetchLogs = async () => {
             const token = localStorage.getItem("token");
             try {
-                const response = await fetch("http://localhost:3001/api/admin/audit", {
+                const response = await fetch(`${API_URL}/api/admin/audit`, {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
                 if (response.ok) {

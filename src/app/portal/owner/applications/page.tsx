@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { useEffect, useState } from "react";
 import { Clock, CheckCircle, XCircle, FileText, Loader2, ArrowRight } from "lucide-react";
@@ -12,7 +13,7 @@ export default function MyApplications() {
         const fetchApplications = async () => {
             const token = localStorage.getItem("token");
             try {
-                const response = await fetch("http://localhost:3001/api/owner/applications", {
+                const response = await fetch(`${API_URL}/api/owner/applications`, {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
                 const data = await response.json();

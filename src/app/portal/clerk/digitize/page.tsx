@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { useState, useEffect, useRef } from "react";
 import { Upload, FileText, CheckCircle, CheckCircle2, Shield, Loader2, Search, ArrowRight, Save, AlertCircle, Monitor, Cpu, Terminal, Camera, Video, X } from "lucide-react";
@@ -84,7 +85,7 @@ export default function DigitizePage() {
 
         try {
             // 1. Initial Handshake
-            const handshake = await fetch("http://localhost:3001/api/ingestion/scanner/scan", {
+            const handshake = await fetch(`${API_URL}/api/ingestion/scanner/scan`, {
                 method: "POST",
                 headers: { "Authorization": `Bearer ${token}` }
             });
@@ -115,7 +116,7 @@ export default function DigitizePage() {
             // Simulated delay for OCR post-scan
             await new Promise(resolve => setTimeout(resolve, isSpreadsheet ? 1500 : 2500));
 
-            const response = await fetch("http://localhost:3001/api/ingestion/extract", {
+            const response = await fetch(`${API_URL}/api/ingestion/extract`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -158,7 +159,7 @@ export default function DigitizePage() {
         setIsSaving(true);
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch("http://localhost:3001/api/ingestion/confirm", {
+            const response = await fetch(`${API_URL}/api/ingestion/confirm`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

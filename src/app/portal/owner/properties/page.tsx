@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { useEffect, useState } from "react";
 import { MapPin, QrCode, ShieldCheck, Loader2, ArrowRight, ExternalLink, X, Fingerprint, Globe, Shield } from "lucide-react";
@@ -13,7 +14,7 @@ export default function MyProperties() {
         const fetchProperties = async () => {
             const token = localStorage.getItem("token");
             try {
-                const response = await fetch("http://localhost:3001/api/owner/properties", {
+                const response = await fetch(`${API_URL}/api/owner/properties`, {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
                 const data = await response.json();

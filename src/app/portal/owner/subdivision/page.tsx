@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -19,7 +20,7 @@ export default function Subdivision() {
         const token = localStorage.getItem("token");
         const fetchProperties = async () => {
             try {
-                const res = await fetch("http://localhost:3001/api/owner/properties", {
+                const res = await fetch(`${API_URL}/api/owner/properties`, {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
                 const data = await res.json();
@@ -38,7 +39,7 @@ export default function Subdivision() {
         setLoading(true);
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch("http://localhost:3001/api/cases/submit", {
+            const response = await fetch(`${API_URL}/api/cases/submit`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

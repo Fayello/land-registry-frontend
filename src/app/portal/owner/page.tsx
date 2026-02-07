@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { useEffect, useState } from "react";
 import { Building2, FileText, ArrowUpRight } from "lucide-react";
@@ -31,7 +32,7 @@ export default function OwnerDashboard() {
         const fetchData = async () => {
             try {
                 // Fetch Properties
-                const pRes = await fetch("http://localhost:3001/api/owner/properties", {
+                const pRes = await fetch(`${API_URL}/api/owner/properties`, {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
                 const pData = await pRes.json();
@@ -39,7 +40,7 @@ export default function OwnerDashboard() {
                 setProperties(validProperties);
 
                 // Fetch Applications
-                const aRes = await fetch("http://localhost:3001/api/owner/applications", {
+                const aRes = await fetch(`${API_URL}/api/owner/applications`, {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
                 const aData = await aRes.json();

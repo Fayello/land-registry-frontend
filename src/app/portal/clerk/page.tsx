@@ -1,4 +1,5 @@
 "use client";
+import { API_URL } from "@/config/api";
 
 import { useState } from "react";
 import { LayoutDashboard, Upload, History, Database, Shield, ArrowRight, Loader2 } from "lucide-react";
@@ -17,7 +18,7 @@ export default function ClerkDashboard() {
         setScannerStatus({ ...scannerStatus, initializing: true });
         const token = localStorage.getItem("token");
         try {
-            const response = await fetch("http://localhost:3001/api/ingestion/scanner/initialize", {
+            const response = await fetch(`${API_URL}/api/ingestion/scanner/initialize`, {
                 method: "POST",
                 headers: { "Authorization": `Bearer ${token}` }
             });

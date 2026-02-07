@@ -1,6 +1,7 @@
 "use client";
 export const dynamic = 'force-dynamic';
 import { useState, useEffect, Suspense } from "react";
+import { API_URL } from "@/config/api";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
@@ -40,7 +41,7 @@ function HomeContent() {
         setUnlocked(false);
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'}/api/registry/search?query=${num}`);
+            const res = await fetch(`${API_URL}/api/registry/search?query=${num}`);
             const data = await res.json();
 
             if (res.ok) {
