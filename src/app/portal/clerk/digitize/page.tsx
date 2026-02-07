@@ -163,8 +163,8 @@ export default function DigitizePage() {
                         <div>
                             <h1 className="text-4xl font-black text-slate-900 tracking-tighter uppercase mb-1">Digitization Desk</h1>
                             <p className="text-slate-500 font-medium flex items-center gap-2">
-                                <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold">LEGACY BRIDGE</span>
-                                Physical Archive Ingestion Engine • Production Grade
+                                <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[10px] font-bold">REGISTRY BRIDGE</span>
+                                Official Archive Processing System • Production Environment
                             </p>
                         </div>
                     </div>
@@ -183,7 +183,7 @@ export default function DigitizePage() {
                                 <AlertCircle size={20} className="text-rose-500 shrink-0 mt-1" />
                                 <div className="text-left">
                                     <p className="text-rose-900 font-black uppercase tracking-widest text-[10px] mb-1">
-                                        {extractionError.includes("Vision") ? "Neural Rejection: Scan Failed" : "Access Rejected: Schema Mismatch"}
+                                        {extractionError.includes("Vision") ? "Verification Error: Scan Failed" : "Access Denied: Schema Mismatch"}
                                     </p>
                                     <p className="text-rose-700 text-sm font-medium leading-relaxed">{extractionError}</p>
                                 </div>
@@ -245,8 +245,8 @@ export default function DigitizePage() {
                                     </div>
 
                                     <div className="p-12 text-center">
-                                        <h3 className="text-xl font-black text-white uppercase tracking-tight mb-2">Instant Digitization Hub</h3>
-                                        <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-10">High-fidelity capture active • Neural focus enabled</p>
+                                        <h3 className="text-xl font-black text-white uppercase tracking-tight mb-2">Record Capture</h3>
+                                        <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-10">Secure capture active • High-resolution focus enabled</p>
 
                                         <button
                                             onClick={handleCapture}
@@ -267,22 +267,22 @@ export default function DigitizePage() {
                                 <div className="flex items-center justify-between mb-6">
                                     <div className="flex items-center gap-3">
                                         <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-                                        <p className="text-blue-400 text-[10px] font-black uppercase tracking-[0.2em]">Live Hardware Feed</p>
+                                        <p className="text-blue-400 text-[10px] font-black uppercase tracking-[0.2em]">Live Device Feed</p>
                                     </div>
-                                    <p className="text-slate-500 text-[10px] font-bold">FEEDS: 60 PPM</p>
+                                    <p className="text-slate-500 text-[10px] font-bold">AUTO-FEED: ACTIVE</p>
                                 </div>
                                 <div className="space-y-4 mb-8">
                                     <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
                                         <div className="h-full bg-blue-500 transition-all duration-300" style={{ width: `${scanProgress}%` }}></div>
                                     </div>
                                     <div className="flex justify-between text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                                        <span>Ingesting Stack</span>
+                                        <span>Processing Batch</span>
                                         <span>{Math.round(scanProgress)}% COMPLETE</span>
                                     </div>
                                 </div>
                                 <div className="bg-slate-950 rounded-2xl p-4 font-mono text-[10px] text-emerald-400/80 space-y-1 h-32 overflow-y-auto custom-scrollbar text-left border border-slate-800">
-                                    <p className="opacity-50 tracking-tighter">Initializing TWAIN driver handshake...</p>
-                                    <p className="text-emerald-400 underline">Hardware discovery successful: KODAK i5000</p>
+                                    <p className="opacity-50 tracking-tighter">Initializing device handshake...</p>
+                                    <p className="text-emerald-400 underline">Scanner detected: Official Document Feed</p>
                                     {scanPages.map((page, i) => (
                                         <div key={i} className="flex items-center gap-2">
                                             <span className="text-emerald-500">✓</span>
@@ -290,7 +290,7 @@ export default function DigitizePage() {
                                             <span className="ml-auto opacity-30">[{new Date().toLocaleTimeString()}]</span>
                                         </div>
                                     ))}
-                                    {scanProgress === 100 && <p className="text-blue-400 animate-pulse mt-2 font-black uppercase">Batch complete. Transferring to OCR Engine...</p>}
+                                    {scanProgress === 100 && <p className="text-blue-400 animate-pulse mt-2 font-black uppercase">Batch complete. Transferring to verification...</p>}
                                 </div>
                             </div>
                         )}
@@ -312,8 +312,8 @@ export default function DigitizePage() {
                                                 <FileText size={48} className="text-green-500" />
                                             </div>
                                             <div className="text-center">
-                                                <p className="text-white font-black uppercase tracking-widest text-sm mb-2">Spreadsheet Ingestion Active</p>
-                                                <p className="text-slate-400 text-[10px] font-bold uppercase tracking-tighter">Parsing Row Data Buffer...</p>
+                                                <p className="text-white font-black uppercase tracking-widest text-sm mb-2">Data Processing Active</p>
+                                                <p className="text-slate-400 text-[10px] font-bold uppercase tracking-tighter">Synchronizing Registry Record...</p>
                                             </div>
                                         </div>
                                     ) : (
@@ -326,14 +326,14 @@ export default function DigitizePage() {
                                                         <Monitor size={48} className="text-blue-500" />
                                                     </div>
                                                     <div className="text-center">
-                                                        <p className="text-white font-black uppercase tracking-widest text-sm mb-2">Live Hardware Stream</p>
-                                                        <p className="text-slate-400 text-[10px] font-bold uppercase tracking-tighter">Syncing batch buffer...</p>
+                                                        <p className="text-white font-black uppercase tracking-widest text-sm mb-2">Live Document Sync</p>
+                                                        <p className="text-slate-400 text-[10px] font-bold uppercase tracking-tighter">Finalizing verification...</p>
                                                     </div>
                                                 </div>
                                             )}
                                             <div className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center pointer-events-none">
                                                 <div className="w-full h-1 bg-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.5)] animate-scan mb-4"></div>
-                                                <p className="text-blue-400 text-[10px] font-black uppercase tracking-widest">Digital Mapping Layers Active</p>
+                                                <p className="text-blue-400 text-[10px] font-black uppercase tracking-widest">Digital Verification Active</p>
                                             </div>
                                         </>
                                     )}
@@ -357,7 +357,7 @@ export default function DigitizePage() {
                                         <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                                             <div className="h-full bg-teal-500 w-full"></div>
                                         </div>
-                                        <p className="text-[9px] font-bold text-teal-600 uppercase">Target: Universal Deed Schema</p>
+                                        <p className="text-[9px] font-bold text-teal-600 uppercase">Target: Official Registry Schema</p>
                                     </div>
                                 </div>
                             </div>
@@ -418,7 +418,7 @@ export default function DigitizePage() {
                                             <div className="flex items-center justify-between mb-1">
                                                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Locality (Town/Quarter)</p>
                                                 <div className="flex items-center gap-1.5 opacity-0 group-hover/field:opacity-100 transition-opacity">
-                                                    <span className="text-[8px] font-black text-blue-500 uppercase tracking-tighter">AI Insight</span>
+                                                    <span className="text-[8px] font-black text-blue-500 uppercase tracking-tighter">Verified Entry</span>
                                                     <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></div>
                                                 </div>
                                             </div>
@@ -431,8 +431,8 @@ export default function DigitizePage() {
                                         <div className="p-6 bg-slate-50 rounded-3xl border border-slate-100 group/field">
                                             <div className="flex items-center justify-between mb-1">
                                                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Area (sqm)</p>
-                                                <div className="flex items-center gap-1.5 bg-blue-50 px-2 py-0.5 rounded-lg border border-blue-100 cursor-help" title="Derived from Digital Cadastre Mapping: Area calculated via neural survey link.">
-                                                    <span className="text-[8px] font-black text-blue-600 uppercase tracking-tighter">System Derived</span>
+                                                <div className="flex items-center gap-1.5 bg-blue-50 px-2 py-0.5 rounded-lg border border-blue-100 cursor-help" title="Defined by official survey records.">
+                                                    <span className="text-[8px] font-black text-blue-600 uppercase tracking-tighter">Registry Validated</span>
                                                 </div>
                                             </div>
                                             <input
@@ -485,10 +485,10 @@ export default function DigitizePage() {
                                     className="w-full mt-12 bg-slate-900 text-white px-8 py-5 rounded-[24px] font-black uppercase text-sm hover:bg-slate-800 transition-all flex items-center justify-center gap-4 shadow-2xl disabled:opacity-50"
                                 >
                                     {isSaving ? <Loader2 className="animate-spin" /> : <Save size={20} />}
-                                    {isSaving ? "Publishing to Digital Ledger..." : "Confirm & Commit to Universal Ledger"}
+                                    {isSaving ? "Saving to Registry..." : "Confirm & Commit to National Registry"}
                                 </button>
                                 <p className="text-center mt-6 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
-                                    Commitment finalizes the digital twin and mirrors legacy data to the blockchain.
+                                    Commitment finalizes the digital record and synchronizes legacy data with the official repository.
                                 </p>
                             </div>
                         </div>

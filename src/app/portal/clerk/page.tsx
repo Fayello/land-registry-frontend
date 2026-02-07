@@ -32,9 +32,9 @@ export default function ClerkDashboard() {
                     <Shield size={200} />
                 </div>
                 <div className="relative z-10 max-w-2xl">
-                    <h2 className="text-4xl font-black tracking-tight uppercase mb-4">Digitization Command</h2>
+                    <h2 className="text-4xl font-black tracking-tight uppercase mb-4">Archive Digitization</h2>
                     <p className="text-slate-400 text-lg leading-relaxed mb-8">
-                        The bridge between physical archives and the cloud. Process legacy "Livre Foncier" records through our high-speed ingestion engine.
+                        The secure bridge between physical archives and the digital registry. Process legacy "Livre Foncier" records through our automated document processing system.
                     </p>
                     <Link
                         href="/portal/clerk/digitize"
@@ -80,11 +80,11 @@ export default function ClerkDashboard() {
 
                 <div className={`p-10 rounded-[40px] border relative overflow-hidden group transition-all duration-500 ${scannerStatus.isReady ? 'bg-emerald-50 border-emerald-100' : 'bg-blue-50 border-blue-100'}`}>
                     <div className="relative z-10">
-                        <h3 className={`text-xl font-black uppercase mb-4 ${scannerStatus.isReady ? 'text-emerald-900' : 'text-blue-900'}`}>Scanner Integration</h3>
+                        <h3 className={`text-xl font-black uppercase mb-4 ${scannerStatus.isReady ? 'text-emerald-900' : 'text-blue-900'}`}>Scanner Connectivity</h3>
                         <p className={`text-sm mb-8 max-w-xs ${scannerStatus.isReady ? 'text-emerald-700/70' : 'text-blue-700/70'}`}>
                             {scannerStatus.isReady
-                                ? `Connected to ${scannerStatus.driver}. Multi-page feeder is active and ready for ingestion.`
-                                : "Connecting to industrial scanners... Ensure the TWAIN driver is active for automated multi-page ingestion."}
+                                ? `Connected to ${scannerStatus.driver}. Document feeder is active and ready for processing.`
+                                : "Searching for connected scanners... Ensure the official drivers are active for automated batch processing."}
                         </p>
                         <div className="flex gap-4">
                             {!scannerStatus.isReady && (
